@@ -1,8 +1,10 @@
-import express from 'express';
-import {ListarTarefas} from '../controllers/UserController'
+import express, { Request, Response } from 'express';
+import {produtos, Teste} from '../controllers/UserController'
 
 const router = express.Router();
 
-router.get('/', ListarTarefas);
+router.get('/teste', Teste);
+
+router.get('/', produtos);
 
 export default router;
