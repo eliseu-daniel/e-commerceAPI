@@ -14,8 +14,8 @@ model Users {
   password  String
   cpf       String     @db.VarChar(11)
   createdAt DateTime   @default(now()) @db.Timestamp(6)
-  Phone     Phone[]
-  Products  Products[]
+  phone     Phone[]
+  products  Products[]
 }
 
 model Clients {
@@ -25,9 +25,9 @@ model Clients {
   password   String
   cpf        String    @db.VarChar(11)
   createdAt  DateTime  @default(now()) @db.Timestamp(6)
-  Address    Address[]
-  Order      Orders[]
-  Phone      Phone[]
+  address    Address[]
+  order      Orders[]
+  phone      Phone[]
 }
 
 model Phone {
@@ -35,8 +35,8 @@ model Phone {
   numberPhone String  @db.VarChar(15)
   userId      Int
   clientId    Int
-  Client      Clients @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User        Users   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  client      Clients @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user        Users   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Address {
@@ -49,15 +49,15 @@ model Address {
   city       String
   stateUF    String
   country    String
-  Client     Clients  @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Order      Orders[]
+  client     Clients  @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  order      Orders[]
 }
 
 model Category {
   id           Int        @id @default(autoincrement())
   nameCategory String     @db.VarChar(100)
   description  String     @db.VarChar(255)
-  Product      Products[]
+  product      Products[]
 }
 
 model Products {
@@ -67,9 +67,9 @@ model Products {
   createdAt    DateTime     @default(now()) @db.Timestamp(6)
   userId       Int
   categoryId   Int
-  ItemOrder    ItemsOrder[]
-  Category     Category     @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User         Users        @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  itemOrder    ItemsOrder[]
+  category     Category     @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user         Users        @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Orders {
@@ -79,10 +79,10 @@ model Orders {
   status     String       @db.VarChar(20)
   totalValue Decimal      @db.Decimal(19, 2)
   addressId  Int
-  ItemOrder  ItemsOrder[]
-  Address    Address      @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Client     Clients      @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Payment    Payments[]
+  itemOrder  ItemsOrder[]
+  address    Address      @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  client     Clients      @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  payment    Payments[]
 }
 
 model ItemsOrder {
@@ -92,8 +92,8 @@ model ItemsOrder {
   quantity  Int
   priceUnit Decimal  @db.Decimal(19, 2)
   subtotal  Decimal  @db.Decimal(19, 2)
-  Order     Orders   @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Product   Products @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  order     Orders   @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product   Products @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Payments {
@@ -103,5 +103,5 @@ model Payments {
   value          Decimal  @db.Decimal(19, 2)
   date_payment   DateTime @default(now())
   status_payment String   @db.VarChar(20)
-  Order          Orders   @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  order          Orders   @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
