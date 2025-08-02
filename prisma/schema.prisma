@@ -1,12 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -15,100 +8,100 @@ datasource db {
 }
 
 model Users {
-  id Int @id @default(autoincrement())
-  nameUser String @db.VarChar(100)
-  email String @unique @db.VarChar(255)
-  password String @db.Text()
-  cpf String @db.VarChar(11)
-  createdAt DateTime @default(now()) @db.Timestamp(6)
-  Products Products[] // para validar o relacionamento entre tabelas
-  Phone Phone[]
+  id        Int        @id @default(autoincrement())
+  nameUser  String     @db.VarChar(100)
+  email     String     @unique @db.VarChar(255)
+  password  String
+  cpf       String     @db.VarChar(11)
+  createdAt DateTime   @default(now()) @db.Timestamp(6)
+  Phone     Phone[]
+  Products  Products[]
 }
 
 model Clients {
-  id Int @id @default(autoincrement())
-  nameClient String @db.VarChar(100)
-  email String @unique @db.VarChar(255)
-  password String @db.Text()
-  cpf String @db.VarChar(11)
-  createdAt DateTime @default(now()) @db.Timestamp(6)
-  Phone Phone[]
-  Order Orders[]
-  Address Address[]
+  id         Int       @id @default(autoincrement())
+  nameClient String    @db.VarChar(100)
+  email      String    @unique @db.VarChar(255)
+  password   String
+  cpf        String    @db.VarChar(11)
+  createdAt  DateTime  @default(now()) @db.Timestamp(6)
+  Address    Address[]
+  Order      Orders[]
+  Phone      Phone[]
 }
 
 model Phone {
-  id Int @id @default(autoincrement())
-  numberPhone String @db.VarChar(15)
-  userId Int
-  clientId Int
-  User Users @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Client Clients @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id          Int     @id @default(autoincrement())
+  numberPhone String  @db.VarChar(15)
+  userId      Int
+  clientId    Int
+  Client      Clients @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User        Users   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Address {
-  id Int @id 
-  clientId Int
-  cep Int
-  number Int
+  id         Int      @id
+  clientId   Int
+  cep        Int
+  number     Int
   complement String
-  district String
-  city String
-  stateUF String
-  country String
-  Client Clients @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Order Orders[]
+  district   String
+  city       String
+  stateUF    String
+  country    String
+  Client     Clients  @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Order      Orders[]
 }
 
 model Category {
-  id Int @id @default(autoincrement())
-  nameCategory String @db.VarChar(100)
-  description String @db.VarChar(255)
-  Product Products[]
+  id           Int        @id @default(autoincrement())
+  nameCategory String     @db.VarChar(100)
+  description  String     @db.VarChar(255)
+  Product      Products[]
 }
 
 model Products {
-  id Int @id @default(autoincrement())
-  nameProduct String @db.VarChar()
-  priceProduct Decimal @db.Decimal(19, 2) 
-  createdAt DateTime @default(now()) @db.Timestamp(6)
-  userId Int
-  categoryId Int
-  User Users @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Category Category @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  ItemOrder ItemsOrder[]
+  id           Int          @id @default(autoincrement())
+  nameProduct  String       @db.VarChar
+  priceProduct Decimal      @db.Decimal(19, 2)
+  createdAt    DateTime     @default(now()) @db.Timestamp(6)
+  userId       Int
+  categoryId   Int
+  ItemOrder    ItemsOrder[]
+  Category     Category     @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User         Users        @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Orders {
-  id Int @id @default(autoincrement())
-  clientId Int
-  date DateTime @default(now())
-  status String @db.VarChar(20)
-  totalValue Decimal @db.Decimal(19,2)
-  addressId Int
-  Client Clients @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Address Address @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  ItemOrder ItemsOrder[]
-  Payment Payments[]
+  id         Int          @id @default(autoincrement())
+  clientId   Int
+  date       DateTime     @default(now())
+  status     String       @db.VarChar(20)
+  totalValue Decimal      @db.Decimal(19, 2)
+  addressId  Int
+  ItemOrder  ItemsOrder[]
+  Address    Address      @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Client     Clients      @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Payment    Payments[]
 }
 
 model ItemsOrder {
-  id Int @id @default(autoincrement())
-  orderId Int
+  id        Int      @id @default(autoincrement())
+  orderId   Int
   productId Int
-  quantity Int
-  priceUnit Decimal @db.Decimal(19,2)
-  subtotal Decimal @db.Decimal(19,2)
-  Order Orders @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Product Products @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  quantity  Int
+  priceUnit Decimal  @db.Decimal(19, 2)
+  subtotal  Decimal  @db.Decimal(19, 2)
+  Order     Orders   @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Product   Products @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Payments {
-  id Int @id @default(autoincrement())
-  orderId Int
-  methodPayment String @db.VarChar(20)
-  value Decimal @db.Decimal(19,2)
-  date_payment DateTime @default(now())
-  status_payment String @db.VarChar(20)
-  Order Orders @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id             Int      @id @default(autoincrement())
+  orderId        Int
+  methodPayment  String   @db.VarChar(20)
+  value          Decimal  @db.Decimal(19, 2)
+  date_payment   DateTime @default(now())
+  status_payment String   @db.VarChar(20)
+  Order          Orders   @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
