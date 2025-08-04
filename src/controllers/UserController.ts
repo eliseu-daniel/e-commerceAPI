@@ -18,7 +18,7 @@ export async function getAll(req: Request, res: Response): Promise<void> {
 }
 
 export async function createUser(req:Request, res:Response): Promise<void> {
-    const {name, email, password, cpf, phone} = req.body;
+    const {name, email, password, cpf} = req.body;
 
     try {
       const newUser = await prisma.users.create({
@@ -27,7 +27,7 @@ export async function createUser(req:Request, res:Response): Promise<void> {
           email,
           password,
           cpf,
-          phone
+          
         }
       });
       
@@ -36,4 +36,21 @@ export async function createUser(req:Request, res:Response): Promise<void> {
       console.error('Erro ao criar usuário:', error);
       res.status(500).json({ message: 'Não foi possível criar o usuário' });
     }
+}
+
+export async function getUser(req: Request<{id:string}>, res: Response): Promise<void> {
+  const id:number = Number(req.params.id);
+
+  try{
+    const data = await prisma.users.findUnique({
+      where: {
+        id: id
+      }
+    });
+
+    res.status(200).json(data)
+  }catch (error) {
+      console.error('Erro ao criar usuário:', error);
+      res.status(500).json({ message: 'Não foi possível consultar o usuário' });
+  }
 }
