@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "public"."Users" (
+CREATE TABLE "Users" (
     "id" SERIAL NOT NULL,
     "nameUser" VARCHAR(100) NOT NULL,
     "email" VARCHAR(255) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE "public"."Users" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Clients" (
+CREATE TABLE "Clients" (
     "id" SERIAL NOT NULL,
     "nameClient" VARCHAR(100) NOT NULL,
     "email" VARCHAR(255) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE "public"."Clients" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Phone" (
+CREATE TABLE "Phone" (
     "id" SERIAL NOT NULL,
     "numberPhone" VARCHAR(15) NOT NULL,
     "userId" INTEGER NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE "public"."Phone" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Address" (
+CREATE TABLE "Address" (
     "id" INTEGER NOT NULL,
     "clientId" INTEGER NOT NULL,
     "cep" INTEGER NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE "public"."Address" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Category" (
+CREATE TABLE "Category" (
     "id" SERIAL NOT NULL,
     "nameCategory" VARCHAR(100) NOT NULL,
     "description" VARCHAR(255) NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE "public"."Category" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Products" (
+CREATE TABLE "Products" (
     "id" SERIAL NOT NULL,
     "nameProduct" VARCHAR NOT NULL,
     "priceProduct" DECIMAL(19,2) NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE "public"."Products" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Orders" (
+CREATE TABLE "Orders" (
     "id" SERIAL NOT NULL,
     "clientId" INTEGER NOT NULL,
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -81,7 +81,7 @@ CREATE TABLE "public"."Orders" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."ItemsOrder" (
+CREATE TABLE "ItemsOrder" (
     "id" SERIAL NOT NULL,
     "orderId" INTEGER NOT NULL,
     "productId" INTEGER NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE "public"."ItemsOrder" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Payments" (
+CREATE TABLE "Payments" (
     "id" SERIAL NOT NULL,
     "orderId" INTEGER NOT NULL,
     "methodPayment" VARCHAR(20) NOT NULL,
@@ -105,37 +105,37 @@ CREATE TABLE "public"."Payments" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Users_email_key" ON "public"."Users"("email");
+CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Clients_email_key" ON "public"."Clients"("email");
+CREATE UNIQUE INDEX "Clients_email_key" ON "Clients"("email");
 
 -- AddForeignKey
-ALTER TABLE "public"."Phone" ADD CONSTRAINT "Phone_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."Users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Phone" ADD CONSTRAINT "Phone_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "Clients"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "public"."Phone" ADD CONSTRAINT "Phone_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "public"."Clients"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Phone" ADD CONSTRAINT "Phone_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "public"."Address" ADD CONSTRAINT "Address_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "public"."Clients"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Address" ADD CONSTRAINT "Address_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "Clients"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "public"."Products" ADD CONSTRAINT "Products_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."Users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Products" ADD CONSTRAINT "Products_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "public"."Products" ADD CONSTRAINT "Products_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "public"."Category"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Products" ADD CONSTRAINT "Products_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "public"."Orders" ADD CONSTRAINT "Orders_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "public"."Clients"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Orders" ADD CONSTRAINT "Orders_addressId_fkey" FOREIGN KEY ("addressId") REFERENCES "Address"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "public"."Orders" ADD CONSTRAINT "Orders_addressId_fkey" FOREIGN KEY ("addressId") REFERENCES "public"."Address"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Orders" ADD CONSTRAINT "Orders_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "Clients"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "public"."ItemsOrder" ADD CONSTRAINT "ItemsOrder_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "public"."Orders"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "ItemsOrder" ADD CONSTRAINT "ItemsOrder_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Orders"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "public"."ItemsOrder" ADD CONSTRAINT "ItemsOrder_productId_fkey" FOREIGN KEY ("productId") REFERENCES "public"."Products"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "ItemsOrder" ADD CONSTRAINT "ItemsOrder_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Products"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "public"."Payments" ADD CONSTRAINT "Payments_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "public"."Orders"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Payments" ADD CONSTRAINT "Payments_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Orders"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;

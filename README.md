@@ -157,7 +157,7 @@ model User {
 Após criar ou alterar o `schema.prisma`, gere o cliente Prisma:
 
 ```bash
-npx prisma generate
+pnpm exec prisma generate
 ```
 
 Isso atualiza o `@prisma/client` para refletir os modelos definidos.
@@ -179,14 +179,14 @@ Acesse `http://localhost:5555` no navegador para visualizar e gerenciar os dados
 ### Em modo desenvolvimento (com ts-node-dev):
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 ### Em modo produção (transpila e roda):
 
 ```bash
-npm run build
-npm start
+pnpm run build
+pnpm start
 ```
 
 ### Com Docker (aplicação + banco)

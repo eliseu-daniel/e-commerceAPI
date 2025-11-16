@@ -4,28 +4,26 @@
   "description": "api para o projeto de ecommerce com typescript",
   "license": "ISC",
   "author": "eliseu",
-  "type": "commonjs",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/index.js",
   "scripts": {
+    "start": "node --watch --experimental-strip-types src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js"
+    "build": "tsc"
   },
   "dependencies": {
-    "@prisma/client": "^6.13.0",
-    "@types/express": "^5.0.3",
-    "@types/node": "^24.1.0",
+    "@prisma/client": "^6.19.0",
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.1",
-    "express": "^5.1.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/dotenv": "^6.1.1",
-    "prisma": "^6.13.0",
-    "ts-node-dev": "^2.0.0"
+    "prisma": "^6.19.0",
+    "typescript": "^5.9.3"
   }
 }
