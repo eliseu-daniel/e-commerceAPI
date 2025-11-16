@@ -1,16 +1,5 @@
-import express from 'express';
-import { Teste, createUser, getAll, getUser } from '../controllers/UserController.ts'
-import { findAll } from '../controllers/ClientsController.ts';
+import { Router } from "express";
 
-const router = express.Router();
+const routes = Router();
 
-router.post('/teste', Teste);
-
-router.get('/users', getAll);
-router.get('/users/:id', getUser);
-router.post('/users', createUser);
-
-
-router.get('/clients', findAll);
-
-export default router;
+export default routes;

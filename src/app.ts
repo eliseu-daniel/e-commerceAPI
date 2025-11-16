@@ -1,9 +1,6 @@
 import express from 'express';
-import routes from './interfaces/https/routes/index.ts';
 import cors from 'cors';
-import Container from './infra/di/container.ts';
-
-export const diContainer = new Container();
+import routes from './interfaces/https/routes/index.ts';
 
 const app = express();
 

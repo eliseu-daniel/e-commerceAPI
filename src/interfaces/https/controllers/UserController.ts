@@ -1,56 +1,55 @@
 import type { Request, Response } from "express";
-import { PrismaClient } from '../../../generated/prisma/client.ts';
+import type { CreateUser } from "../../../app/users/createUser.ts";
+import type { GetAllUser } from "../../../app/users/getAllUsers.ts";
+import type { GetUser } from "../../../app/users/getUser.ts";
 
-const prisma = new PrismaClient();
+export class UserController {
+  private createUserUseCase: CreateUser;
+  private getAllUseCase: GetAllUser;
+  private getUserUseCase: GetUser;
 
-export function Teste(req: Request, res: Response): void {
-  console.log(req.body);
-  res.json(req.body);
-}
-
-export async function getAll(req: Request, res: Response): Promise<void> {
-  try {
-    const users = await prisma.users.findMany();
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: 'Error fetching users' });
+  constructor(createUserUseCase: CreateUser, getAllUseCase: GetAllUser, getUserUseCase: GetUser) {
+    this.createUserUseCase = createUserUseCase;
+    this.getAllUseCase = getAllUseCase;
+    this.getUserUseCase = getUserUseCase
   }
-}
 
-export async function createUser(req: Request, res: Response): Promise<void> {
-  const { name, email, password, cpf } = req.body;
+  async createUser(req: Request, res: Response) {
+    const { name, email, password, cpf } = req.body;
 
-  try {
-    const newUser = await prisma.users.create({
-      data: {
+    try {
+      const newUser = await this.createUserUseCase.execute({
         nameUser: name,
         email,
         password,
         cpf,
+      });
 
-      }
-    });
+      res.status(201).json(newUser);
+    } catch (error) {
+      console.error('Erro ao criar usuário:', error);
+      res.status(500).json({ message: 'Não foi possível criar o usuário' });
+    }
+  };
 
-    res.status(201).json(newUser);
-  } catch (error) {
-    console.error('Erro ao criar usuário:', error);
-    res.status(500).json({ message: 'Não foi possível criar o usuário' });
-  }
-}
+  async getAllUser(req: Request, res: Response) {
+    try {
+      const users = await this.getAllUseCase.findMany();
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ error: 'Error ao consultar usuários' });
+    }
+  };
 
-export async function getUser(req: Request<{ id: string }>, res: Response): Promise<void> {
-  const id: number = Number(req.params.id);
+  async getUser(req: Request<{ id: string }>, res: Response) {
+    const id: number = Number(req.params.id);
 
-  try {
-    const data = await prisma.users.findUnique({
-      where: {
-        id: id
-      }
-    });
-
-    res.status(200).json(data)
-  } catch (error) {
-    console.error('Erro ao criar usuário:', error);
-    res.status(500).json({ message: 'Não foi possível consultar o usuário' });
-  }
+    try {
+      const data = await this.getUserUseCase.findUnique(id);
+      res.status(200).json(data)
+    } catch (error) {
+      console.error('Erro ao criar usuário:', error);
+      res.status(500).json({ message: 'Não foi possível consultar o usuário' });
+    }
+  };
 }

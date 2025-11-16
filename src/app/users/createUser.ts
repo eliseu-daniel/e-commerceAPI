@@ -1,19 +1,20 @@
-import { diContainer } from '../../app.ts';
+import type { CreateUserInterface, UserRepository } from '../../infra/repositories/UserRepository.ts';
 
 export class CreateUser {
+    private userRepository: UserRepository;
 
-    constructor(diContainer: any) {
-        this.userRepository = diContainer;
+    constructor(userRepository: UserRepository) {
+        this.userRepository = userRepository;
     }
-    async execute(userData) {
-        const { name, email, password, cpf, phone, products } = userData;
 
-        if (!name || !email || !password || !cpf || !phone) {
+    async execute(userData: CreateUserInterface) {
+        const { nameUser, email, password, cpf } = userData;
+
+        if (!nameUser || !email || !password || !cpf) {
             throw new Error("All fields are required");
         }
-        const newUser = await this.userRepository.create({
-            name, email, password, cpf, phone, products
-        });
+
+        const newUser = await this.userRepository.create(userData);
         return newUser;
     }
 }
