@@ -255,5 +255,4 @@ CMD ["npm", "start"]
 - ts-node-dev
 - PostgreSQL
 - Prisma
-- Docker
 - Docker Compose

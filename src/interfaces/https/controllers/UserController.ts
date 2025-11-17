@@ -14,12 +14,13 @@ export class UserController {
     this.getUserUseCase = getUserUseCase
   }
 
-  async createUser(req: Request, res: Response) {
-    const { name, email, password, cpf } = req.body;
+  // para resolver o problema do controler dando erro vazio, modelo 2
+  createUser = async (req: Request, res: Response) => {
+    const { nameUser, email, password, cpf } = req.body;
 
     try {
       const newUser = await this.createUserUseCase.execute({
-        nameUser: name,
+        nameUser: nameUser,
         email,
         password,
         cpf,
@@ -32,16 +33,19 @@ export class UserController {
     }
   };
 
+  // para resolver o problema do controler dando erro vazio, modelo 1
   async getAllUser(req: Request, res: Response) {
     try {
       const users = await this.getAllUseCase.findMany();
       res.json(users);
     } catch (error) {
+      console.log(error)
       res.status(500).json({ error: 'Error ao consultar usuários' });
     }
   };
 
-  async getUser(req: Request<{ id: string }>, res: Response) {
+  // para resolver o problema do controler dando erro vazio, modelo 2
+  getUser = async (req: Request<{ id: string }>, res: Response) => {
     const id: number = Number(req.params.id);
 
     try {

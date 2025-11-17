@@ -1,14 +1,12 @@
-import { type Express, Router } from "express";
+import { type Express, type IRouter } from "express";
 import type { UserController } from "../controllers/UserController.ts";
 
 export class UserRoutes {
-    constructor(app: Express, controller: UserController) {
-        const router = Router();
+    constructor(router: IRouter, controller: UserController) {
 
-        router.get('/', controller.getAllUser);
-        router.get('/:id', controller.getUser);
-        router.post('/', controller.createUser);
-
-        app.use('/users', router)
+        // para resolver o problema do controler dando erro vazio, modelo 1
+        router.get('/users', (req, res) => controller.getAllUser(req, res));
+        router.get('/users/:id', controller.getUser);
+        router.post('/users', controller.createUser);
     }
 }

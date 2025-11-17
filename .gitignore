@@ -3,3 +3,5 @@
 /generated/prisma
 
 /src/generated/prisma
+
+/src/interfaces/https/modules/UserModule.test.ts
